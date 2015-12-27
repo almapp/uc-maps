@@ -1,4 +1,4 @@
-# UC Courses REST API
+# UC Maps REST API
 
 [![Build Status][ci-image]][ci-url] [![dependencies][dependencies-image]][dependencies-url] [![dev-dependencies][dev-dependencies-image]][dev-dependencies-url]
 
