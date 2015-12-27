@@ -1,0 +1,11 @@
+web:
+  build: .
+  ports:
+    - "3000:3000"
+  links:
+    - mongo
+  environment:
+    - NODE_ENV
+
+mongo:
+  image: mongo

@@ -1,0 +1,46 @@
+{
+  "name": "uc-maps",
+  "version": "0.1.0",
+  "description": "UC Maps REST API",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "develop": "node_modules/nodemon/bin/nodemon.js index.js",
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/almapp/uc-maps.git"
+  },
+  "keywords": [
+    "uc",
+    "puc",
+    "chile",
+    "maps"
+  ],
+  "author": "Patricio López <patricio@lopezjuri.com> (https://lopezjuri.com)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/almapp/uc-maps/issues"
+  },
+  "homepage": "https://github.com/almapp/uc-maps#readme",
+  "dependencies": {
+    "bluebird": "^3.1.1",
+    "cors": "^2.7.1",
+    "express": "^4.13.3",
+    "http-status-codes": "^1.0.5",
+    "mongoose": "^4.3.3",
+    "morgan": "^1.6.1",
+    "nconf": "^0.8.2",
+    "require-dir": "^0.3.0"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
+    "nodemon": "^1.8.1",
+    "supertest": "^1.1.0"
+  }
+}

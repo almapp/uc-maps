@@ -1,0 +1,5 @@
+{
+  "mongo": {
+    "uri": "mongodb://mongo:27017/almapp-test"
+  }
+}

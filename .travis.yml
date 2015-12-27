@@ -1,0 +1,14 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - NODE_ENV=CI
+
+script:
+  - docker-compose build
+  - docker-compose run web npm test
+  - docker-compose stop
+  - docker-compose rm -f
