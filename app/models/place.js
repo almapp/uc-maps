@@ -77,18 +77,22 @@ PlaceSchema.statics.createPlaces = function(places) {
 
 PlaceSchema.statics.findPlace = function(params) {
   // Object keys order matter
-  return this.model('Place').findOne({ _id: {
-    campus: params.campus,
-    identifier: params.identifier,
-  }});
+  return this.model('Place').findOne({
+    _id: {
+      campus: params.campus,
+      identifier: params.identifier,
+    }
+  });
 }
 
 PlaceSchema.statics.findPlaces = function(params) {
   // Object keys order matter
-  return this.model('Place').find({ _id: {
-    campus: params.campus,
-    identifier: params.identifier,
-  }});
+  return this.model('Place').find({
+    _id: {
+      campus: params.campus,
+      identifier: params.identifier,
+    }
+  });
 }
 
 const Place = mongoose.model('Place', PlaceSchema);
