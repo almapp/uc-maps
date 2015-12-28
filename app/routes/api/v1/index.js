@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
+router.use('/places', require('./places'));
+
 router.use((err, req, res, next) => {
   if (process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase() === 'PRODUCTION') {
     delete err.stack;
