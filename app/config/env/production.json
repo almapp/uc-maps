@@ -1,5 +1,6 @@
 {
   "mongo": {
-    "uri": "mongodb://mongo:27017/almapp"
+    "uri": "mongodb://mongo:27017/almapp",
+    "debug": false
   }
 }

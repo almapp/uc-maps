@@ -14,5 +14,6 @@ module.exports = nconf.env().argv().file(file).defaults({
   'port': 3000,
   'mongo': {
     'uri': 'mongodb://localhost:27017/ucmaps',
+    'debug': true,
   },
 });
