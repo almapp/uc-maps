@@ -1,33 +1,27 @@
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 
 const Schema = mongoose.Schema;
 
-const IDSchema = new Schema({
-  campus: {
-    type: String,
-    index: true,
-    required: true,
-    uppercase: true,
-  },
-  identifier: {
-    type: String,
-    index: true,
-    required: true,
-    uppercase: true,
-  },
-}, {
-  _id: false,
-});
-
 const PlaceSchema = new Schema({
-  _id: IDSchema, // Custom ID type
+  _id: String,
+  identifier: {
+    $type: String,
+    index: true,
+    required: true,
+    uppercase: true,
+  },
+  campus: {
+    $type: String,
+    index: true,
+    required: true,
+    uppercase: true,
+  },
   name: String,
   shortName: String,
   address: String,
   information: String,
   location: {
-    // 'Point' or 'Polygon'
-    type: String,
     /* ----------------------------------
     Point:
       'coordinates' must be single coordinate: [longitude, latitude, altitude?]
@@ -41,7 +35,31 @@ const PlaceSchema = new Schema({
           [[-33.496568, -70.616281], [-33.496246, -70.616206]]
         ]
     ------------------------------------ */
-    coordinates: [], // Array of mixed
+    type: {
+      $type: String,
+      enum: ['Point', 'Polygon'],
+      default: 'Point',
+    },
+    coordinates: {
+      $type: [],  // Array of mixed
+      default: [0, 0],
+    },
+    floor: String,
+    zoom: {
+      $type: Number,
+      min: 0,
+      max: 20,
+    },
+    angle: {
+      $type: Number,
+      min: 0,
+      max: 45,
+    },
+    tilt: {
+      $type: Number,
+      min: 0,
+      max: 45,
+    },
   },
   contact: {
     phones: [String],
@@ -49,23 +67,45 @@ const PlaceSchema = new Schema({
     urls: [String],
     social: {},
   },
-  ancestors: [IDSchema],
-  parent: IDSchema,
+  parent: {
+    $type: String,
+    ref: 'Place'
+  },
+  ancestors: {
+    $type: [{
+      $type: String,
+      ref: 'Place'
+    }],
+    index: true
+  },
+  categories: [{
+    $type: String,
+    index: true
+  }],
 }, {
+  autoIndex: true,
   typeKey: '$type',
 });
 
-function processPlace(place) {
+// Add GeoJSON index
+PlaceSchema.index({
+  location: '2dsphere'
+});
+
+function getID(place) {
   const campus = place.campus;
-  const identifier = place.identifier;
-  delete place.campus;
-  delete place.identifier;
-  place._id = {
-    campus: campus,
-    identifier: identifier,
-  };
+  const identifier = place.identifier ||  campus;
+  return crypto.createHash('md5').update(`${campus}-${identifier}`).digest('hex');
+}
+
+function processPlace(place) {
+  place._id = getID(place);
+  if (place.parent) place.parent = getID(place.parent);
+  if (place.ancestors) place.ancestors = place.ancestors.map(getID);
   return place;
 }
+
+PlaceSchema.statics.getID = getID;
 
 PlaceSchema.statics.createPlace = function(place) {
   return this.model('Place').create(processPlace(place));
@@ -73,26 +113,6 @@ PlaceSchema.statics.createPlace = function(place) {
 
 PlaceSchema.statics.createPlaces = function(places) {
   return this.model('Place').create(places.map(processPlace));
-}
-
-PlaceSchema.statics.findPlace = function(params) {
-  // Object keys order matter
-  return this.model('Place').findOne({
-    _id: {
-      campus: params.campus,
-      identifier: params.identifier,
-    }
-  });
-}
-
-PlaceSchema.statics.findPlaces = function(params) {
-  // Object keys order matter
-  return this.model('Place').find({
-    _id: {
-      campus: params.campus,
-      identifier: params.identifier,
-    }
-  });
 }
 
 const Place = mongoose.model('Place', PlaceSchema);
