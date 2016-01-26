@@ -39,6 +39,17 @@ router.route('/:id/faculties')
       .catch(next);
   });
 
+router.route('/:id/buildings')
+  .get((req, res, next) => {
+    const query = {
+      ancestors: req.campus,
+      categories: 'building',
+    };
+    Place.find(query).lean()
+      .then(places => res.send(places))
+      .catch(next);
+  });
+
 router.route('/:id/places')
   .get((req, res, next) => {
     const query = {
