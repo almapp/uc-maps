@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto');
 
 const Schema = mongoose.Schema;
 
@@ -8,13 +7,7 @@ const PlaceSchema = new Schema({
   identifier: {
     $type: String,
     index: true,
-    required: true,
-    uppercase: true,
-  },
-  campus: {
-    $type: String,
-    index: true,
-    required: true,
+    unique: true,
     uppercase: true,
   },
   name: String,
@@ -69,18 +62,19 @@ const PlaceSchema = new Schema({
   },
   parent: {
     $type: String,
-    ref: 'Place'
+    ref: 'Place',
+    index: true,
   },
   ancestors: {
     $type: [{
       $type: String,
-      ref: 'Place'
+      ref: 'Place',
     }],
-    index: true
+    index: true,
   },
   categories: [{
     $type: String,
-    index: true
+    index: true,
   }],
 }, {
   autoIndex: true,
@@ -91,29 +85,6 @@ const PlaceSchema = new Schema({
 PlaceSchema.index({
   location: '2dsphere'
 });
-
-function getID(place) {
-  const campus = place.campus;
-  const identifier = place.identifier ||  campus;
-  return crypto.createHash('md5').update(`${campus}-${identifier}`).digest('hex');
-}
-
-function processPlace(place) {
-  place._id = getID(place);
-  if (place.parent) place.parent = getID(place.parent);
-  if (place.ancestors) place.ancestors = place.ancestors.map(getID);
-  return place;
-}
-
-PlaceSchema.statics.getID = getID;
-
-PlaceSchema.statics.createPlace = function(place) {
-  return this.model('Place').create(processPlace(place));
-}
-
-PlaceSchema.statics.createPlaces = function(places) {
-  return this.model('Place').create(places.map(processPlace));
-}
 
 const Place = mongoose.model('Place', PlaceSchema);
 

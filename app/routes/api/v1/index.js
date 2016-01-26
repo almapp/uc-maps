@@ -19,7 +19,6 @@ router.use((req, res, next) => {
   next();
 });
 
-router.use('/campuses', require('./campuses'));
 router.use('/places', require('./places'));
 
 router.use((err, req, res, next) => {
