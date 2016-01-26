@@ -7,11 +7,9 @@ const router = express.Router();
 
 router.route('/')
   .get((req, res, next) => {
-    const restrictions = [];
-    if (req.query.categories instanceof Array) req.query.categories.forEach(cat => restrictions.push({ categories: cat }));
-    if (req.query.near) restrictions.push({ location: req.query.near });
-
-    const query = (restrictions.length) ? { $and: restrictions } : {};
+    const query = {};
+    if (req.query.categories instanceof Array) query.categories = { $in: req.query.categories };
+    if (req.query.near) query.location = req.query.near;
 
     Place.find(query).lean()
       .then(places => res.send(places))
@@ -34,13 +32,10 @@ router.route('/:id')
 
 router.route('/:id/childs')
   .get((req, res, next) => {
-    const restrictions = [
-      { ancestors: req.params.id },
-    ];
-    if (req.query.categories instanceof Array) req.query.categories.forEach(cat => restrictions.push({ categories: cat }));
-    if (req.query.near) restrictions.push({ location: req.query.near });
+    const query = { ancestors: req.params.id };
+    if (req.query.categories instanceof Array) query.categories = { $in: req.query.categories };
+    if (req.query.near) query.location = req.query.near;
 
-    const query = { $and: restrictions };
     Place.find(query).lean()
       .then(places => res.send(places))
       .catch(next);
