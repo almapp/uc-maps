@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node index.js",
     "develop": "node_modules/nodemon/bin/nodemon.js index.js",
+    "seed": "node app/tasks/seed.js",
     "test": "mocha test"
   },
   "repository": {
@@ -35,6 +36,7 @@
     "mongoose": "^4.3.3",
     "morgan": "^1.6.1",
     "nconf": "^0.8.2",
+    "request-promise": "^1.0.2",
     "require-dir": "^0.3.0"
   },
   "devDependencies": {
