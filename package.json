@@ -26,20 +26,20 @@
   },
   "homepage": "https://github.com/almapp/uc-maps#readme",
   "dependencies": {
-    "bluebird": "^3.1.5",
+    "bluebird": "^3.3.3",
     "cors": "^2.7.1",
     "express": "^4.13.4",
-    "http-status-codes": "^1.0.5",
-    "mongoose": "^4.3.7",
-    "morgan": "^1.6.1",
-    "nconf": "^0.8.2",
-    "request-promise": "^2.0.0",
+    "http-status-codes": "^1.0.6",
+    "mongoose": "^4.4.5",
+    "morgan": "^1.7.0",
+    "nconf": "^0.8.4",
+    "request-promise": "^2.0.1",
     "require-dir": "^0.3.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
-    "nodemon": "^1.8.1",
-    "supertest": "^1.1.0"
+    "nodemon": "^1.9.1",
+    "supertest": "^1.2.0"
   }
 }
