@@ -58,7 +58,11 @@ const PlaceSchema = new Schema({
     phones: [String],
     emails: [String],
     urls: [String],
-    social: {},
+    social: [{
+      type: String,
+      url: String,
+      id: String,
+    }],
   },
   parent: {
     $type: String,
